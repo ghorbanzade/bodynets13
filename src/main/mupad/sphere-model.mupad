@@ -1,0 +1,46 @@
+
+NTR := 8:
+
+Acc := 0:
+ST := zeros(1,NTR) :
+
+for i from 1 to NTR+1 step 1 do
+  NTRSM(i) := 0+(i-1)*PI/NTR : 
+end_for:
+
+NPRSM := ones(1,NTR) :
+
+for i from 1 to NTR step 1 do
+  ST(i) := 2* PI* 1e6 * (cos(NTRSM(i))-cos(NTRSM(i+1))):
+  NPRSM (i) := round(ST(i)/ST(1)):
+  Acc := NPRSM(i) + Acc:
+end_for:
+
+for i from 1 to NTR step 1 do
+  S(i) := plot::Spherical([1, Phi, Theta], Phi = 0 .. 2*PI, Theta = (i-1)*PI/NTR .. i*PI/NTR):
+end_for:
+P := plot::Group3d(S(i) $ i = 1..NTR, Axes = None, VLinesVisible = FALSE):
+
+for i from 1 to NTR do
+   for j from 1 to NPRSM(i) do
+      CJ(j) := plot::Spherical([1, u, v],u = j*2*PI/NPRSM(i)+PI/NPRSM(i) .. j*2*PI/NPRSM(i)+PI/360+PI/NPRSM(i), v = NTRSM(i) .. NTRSM(i+1)):
+   end_for:
+   CI(i) := plot::Group3d(CJ(j) $ j = 1..NPRSM(i)):
+end_for:
+C := plot::Group3d(CI(i) $ i = 2..NTR-1,LineWidth = 0.1):
+
+for i from 1 to NTR do
+   HL(i) := plot::Spherical([1,u,v],u = 0 .. 2*PI, v = NTRSM(i) .. NTRSM(i)+PI/360):
+end_for:
+H := plot::Group3d(HL(i) $ i = 2..NTR,LineWidth = 0.1):
+
+plot(P,C,H,Axes = None, FillColor = RGB::Grey, FillColorType=Flat):
+plot(P,C,H,Axes = None, FillColor = RGB::Grey, FillColorType=Flat):
+plot(P,C,H,Axes = None, FillColor = RGB::Grey, FillColorType=Flat,Filled = FALSE):
+plot(P,C,H,FillColor = RGB::Grey, FillColorType=Flat):
+plot(P,C,H,Axes = None, FillColor = RGB::Grey):
+plot(P,C,H,Axes = None, FillColor = RGB::Grey,CameraDirection = [1, 0, 0]):
+plot(P,C,H,Axes = None, FillColor = RGB::Grey,CameraDirection = [0, 0, 1]):
+plot(P,C,H,Axes = None):
+plot(P,C,H):
+
